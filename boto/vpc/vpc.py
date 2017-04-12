@@ -48,6 +48,7 @@ class VPC(TaggedEC2Object):
         self.is_default = None
         self.instance_tenancy = None
         self.classic_link_enabled = None
+        self.description = None
 
     def __repr__(self):
         return 'VPC:%s' % self.id
@@ -67,6 +68,8 @@ class VPC(TaggedEC2Object):
             self.instance_tenancy = value
         elif name == 'classicLinkEnabled':
             self.classic_link_enabled = value
+        elif name == 'description':
+            self.description = value
         else:
             setattr(self, name, value)
 
