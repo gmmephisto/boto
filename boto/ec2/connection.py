@@ -41,6 +41,7 @@ from boto.ec2.instance import ConsoleOutput, InstanceAttribute
 from boto.ec2.keypair import KeyPair
 from boto.ec2.address import Address
 from boto.ec2.volume import Volume, VolumeAttribute
+from boto.ec2.volume import AttachmentSet
 from boto.ec2.snapshot import Snapshot
 from boto.ec2.snapshot import SnapshotAttribute
 from boto.ec2.zone import Zone
@@ -2421,8 +2422,9 @@ class EC2Connection(AWSQueryConnection):
         :type attach_type str
         :param attach_type: Volume attachment type (generic|database)
 
-        :rtype: bool
-        :return: True if successful
+        :rtype: AttachmentSet
+        :return: Attribute status of returned object will be 'attached'
+                 in case of success
         """
         params = {'InstanceId': instance_id,
                   'VolumeId': volume_id}
@@ -2432,7 +2434,7 @@ class EC2Connection(AWSQueryConnection):
             params['Device'] = device
         if attach_type is not None:
             params['AttachType'] = attach_type
-        return self.get_status('AttachVolume', params, verb='POST')
+        return self.get_object('AttachVolume', params, AttachmentSet, verb='POST')
 
     def detach_volume(self, volume_id, instance_id=None,
                       device=None, force=False, dry_run=False):
@@ -2463,8 +2465,9 @@ class EC2Connection(AWSQueryConnection):
         :type dry_run: bool
         :param dry_run: Set to True if the operation should not actually run.
 
-        :rtype: bool
-        :return: True if successful
+        :rtype: AttachmentSet
+        :return: Attribute status of returned object will be 'detached'
+                 in case of success
         """
         params = {'VolumeId': volume_id}
         if instance_id:
@@ -2475,7 +2478,7 @@ class EC2Connection(AWSQueryConnection):
             params['Force'] = 'true'
         if dry_run:
             params['DryRun'] = 'true'
-        return self.get_status('DetachVolume', params, verb='POST')
+        return self.get_object('DetachVolume', params, AttachmentSet, verb='POST')
 
     # Snapshot methods
 
