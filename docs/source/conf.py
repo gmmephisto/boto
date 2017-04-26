@@ -26,7 +26,7 @@ latex_documents = [
    u'Mitch Garnaat', 'manual'),
 ]
 intersphinx_mapping = {'http://docs.python.org/': None}
-github_project_url = 'https://github.com/boto/boto/'
+github_project_url = 'https://github.com/c2devel/boto/'
 
 try:
     release = os.environ.get('SVN_REVISION', 'HEAD')
